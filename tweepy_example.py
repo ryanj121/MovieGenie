@@ -11,5 +11,5 @@ auth = tweepy.AppAuthHandler("consumer key", "consumer key secret")
 # Do not use "api.search_tweets" like in Tweepy's own example. Doesn't work for some reason
 
 api = tweepy.API(auth)
-for tweet in tweepy.Cursor(api.search, q='Enter Search Text Here').items(10):
+for tweet in tweepy.Cursor(api.search, q='movies').items(10):
     print(tweet.text)
