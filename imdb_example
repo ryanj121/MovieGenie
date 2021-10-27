@@ -1,14 +1,16 @@
 from imdb import IMDb
 
+# Create an instance of the IMDb class
+
 ia = IMDb()
 
-### Get Worldwide gross for movie by IMDb ID number
+# Get Worldwide gross for movie by IMDb ID number
 
 movie = ia.get_movie(4154796)
 print(movie['box office']['Cumulative Worldwide Gross'])
 
-### Serach for movies by name
-### Outputs 'Movie Name : IMDb ID number'
+# Serach for movies by name
+# Outputs 'Movie Name : IMDb ID number'
 
 name = 'Avengers: End Game'
 search = ia.search_movie(name)
