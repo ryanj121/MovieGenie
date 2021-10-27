@@ -9,11 +9,12 @@ ia = IMDb()
 movie = ia.get_movie(4154796)
 print(movie['box office']['Cumulative Worldwide Gross'])
 
-# Serach for movies by name
-# Outputs 'Movie Name : IMDb ID number'
+# Searches for a movie by name and creates a list named 'search' with all IMDb entries with that name
 
 name = 'Avengers: End Game'
 search = ia.search_movie(name)
+
+# Loops through the 'search' list and prints 'Movie Name : IMDb ID number'
 
 for i in range(len(search)):
     id = search[i].movieID
