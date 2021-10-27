@@ -1,0 +1,15 @@
+from imdb import IMDb
+
+ia = IMDb()
+
+movie = ia.get_movie(4154796)
+print(movie['box office']['Cumulative Worldwide Gross'])
+
+### Serach for movies by name
+name = 'Avengers: End Game'
+search = ia.search_movie(name)
+
+for i in range(len(search)):
+    id = search[i].movieID
+    print(search[i]['title'] + " : " + id)
+    
