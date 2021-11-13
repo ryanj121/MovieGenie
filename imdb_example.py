@@ -11,7 +11,7 @@ print(movie['box office']['Cumulative Worldwide Gross'])
 
 # Searches for a movie by name and creates a list named 'search' with all IMDb entries with that name
 
-name = 'Avengers: End Game'
+name = 'The Matrix'
 search = ia.search_movie(name)
 
 # Loops through the 'search' list and prints 'Movie Name : IMDb ID number'
