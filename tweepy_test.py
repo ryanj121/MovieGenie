@@ -1,12 +1,16 @@
 import tweepy
+import os
 
 # These are the keys from the "Consumer Keys" section from your Twitter Devloper Portal
-# Keep the "" when you paste in your keys
 
-# !!!!! Test this out locally for now, do not upload any of your actual keys to github !!!!!
-# https://developer.twitter.com/en/docs/authentication/guides/authentication-best-practices
+# Inside of your terminal you would want to write something like this:
+# export CONSUMER_KEY='xxxxxxxxxxxxxxxxxxx'
+# export 'CONSUMER_SECRET'='xxxxxxxxxxxxxxxxxxxxxxx'
 
-auth = tweepy.AppAuthHandler("consumer key", "consumer key secret")
+consumer_key = os.environ.get("CONSUMER_KEY")
+consumer_secret = os.environ.get("CONSUMER_SECRET")
+
+auth = tweepy.AppAuthHandler(consumer_key, consumer_secret)
 
 # Do not use "api.search_tweets" like in Tweepy's own example. Doesn't work for some reason
 
