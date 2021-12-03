@@ -1,0 +1,28 @@
+def personID(name):
+    ia = IMDb()    
+    person = ia.search_person(name)
+    person_id = person[0].personID
+    return person_id
+
+def get_actor_movies(personID):
+    ia = IMDb()
+    word2= 'id:'
+    actor_name = ia.get_person(personID)
+    x = str(actor_name['actor'])
+    new_list=[]
+    new_list2=[]         
+    for word in x.split():        
+        if word2 in word:
+            movie_ID = word[3:11].strip('[')
+            movie_title = str(ia.get_movie(movie_ID))
+            
+            #print(movie_title)
+            #new_list.append(movie_ID)         32  and 31            lstrip and rstrip
+            new_list2.append(movie_title)
+    return new_list2
+
+
+# = input('Enter Actor name: ')
+x = personID("Brad Pitt")
+var2 = get_actor_movies(x)
+print(var2)
