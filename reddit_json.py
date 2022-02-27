@@ -1,8 +1,6 @@
 import praw
 from praw.models import MoreComments
-import time
 from datetime import datetime
-import csv
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import subjectivity
 from nltk.sentiment import SentimentAnalyzer
@@ -52,9 +50,8 @@ def get_sentiment_averages(sentences):
     return averages_dict
 
 def write_to_json(stats_dictionary, filename):
-    json_string = json.dumps(stats_dictionary)
-    with open(filename, 'w') as input_dict:
-        json.dump(json_string, input_dict)
+    with open(filename, 'w', encoding='utf-8') as input_dict:
+        json.dump(stats_dictionary, input_dict, ensure_ascii=False, indent=4)
 
 def append_to_dict(dictionary, submission, comments):
     dictionary['upvote_ratio'].append(submission.upvote_ratio)
@@ -69,20 +66,22 @@ def total_sentiment_counts(dictionary):
     total_neg = 0
 
     for count, title in enumerate(dictionary['titles']):
-        avg_comment_sentiment = get_sentiment_averages(dictionary['comments'][count])
-        if float(avg_comment_sentiment['positive']) > float(avg_comment_sentiment['negative']):
-            overall_comment_sentiment = 'positive'
-        else:
-            overall_comment_sentiment = 'negative'
+        if len(dictionary['comments'][count]) > 0:
+            avg_comment_sentiment = get_sentiment_averages(dictionary['comments'][count])
 
-        if title == 'positive' and overall_comment_sentiment == 'positive':
-            total_pos += 1
-        elif title == 'positive' and overall_comment_sentiment == 'negative':
-            total_neg += 1
-        elif title == 'negative' and overall_comment_sentiment == 'negative':
-            total_pos += 1
-        else:
-            total_neg += 1
+            if float(avg_comment_sentiment['positive']) > float(avg_comment_sentiment['negative']):
+                overall_comment_sentiment = 'positive'
+            else:
+                overall_comment_sentiment = 'negative'
+
+            if title == 'positive' and overall_comment_sentiment == 'positive':
+                total_pos += 1
+            elif title == 'positive' and overall_comment_sentiment == 'negative':
+                total_neg += 1
+            elif title == 'negative' and overall_comment_sentiment == 'negative':
+                total_pos += 1
+            else:
+                total_neg += 1
 
     pos_and_neg = {
         'pos' : total_pos,
@@ -121,8 +120,13 @@ if __name__ == "__main__":
         'comments' : []
     }
 
-    # Loop through r/movies submissions searching by movie name
-    for submission in reddit.subreddit('movies').search(query=movie_name):
+    completed_posts = 0
+
+    # Loop through r/movies submissions searching by movie name - Adjust limit for number of results #########################
+    for submission in reddit.subreddit('movies').search(query=movie_name, limit=10):
+
+        completed_posts += 1
+        print(f'Posts completed: {completed_posts} / 100')
 
         created_utc = (submission.created_utc)
         created_date = datetime.utcfromtimestamp(created_utc).strftime('%Y-%m-%d')
@@ -139,6 +143,8 @@ if __name__ == "__main__":
         else:
             after_dict = append_to_dict(after_dict, submission, comments)
 
+    print('Printing data to json files...')
+
     # Before release date (averages)
     before_ratio_total = round((sum(before_dict['upvote_ratio']) / len(before_dict['upvote_ratio']) * 100), 2)
     before_score_total = round(sum(before_dict['score']) / len(before_dict['score']), 2)
@@ -147,7 +153,7 @@ if __name__ == "__main__":
     before_sentiment_totals = total_sentiment_counts(before_dict)
 
     final_stats_before = {
-        'Ratio' : before_ratio_total,
+        'Upvote Ratio' : before_ratio_total,
         'Posts' : before_score_total,
         'Comments' : before_comments_total,
         'Sentiment' : before_sentiment,
@@ -165,7 +171,7 @@ if __name__ == "__main__":
     after_sentiment_totals = total_sentiment_counts(after_dict)
 
     final_stats_after = {
-        'Ratio' : after_ratio_total,
+        'Upvote Ratio' : after_ratio_total,
         'Posts' : after_score_total,
         'Comments' : after_comments_total,
         'Sentiment' : after_sentiment,
@@ -174,3 +180,5 @@ if __name__ == "__main__":
     }
 
     write_to_json(final_stats_after, 'after_stats.json')
+
+    print('Done!')
