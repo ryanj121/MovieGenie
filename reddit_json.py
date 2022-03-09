@@ -9,7 +9,7 @@ from nltk.sentiment.util import *
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 # from nltk import tokenize
 import json
-import imdb_actor
+from movie_code import get_date
 
 # Returns movie release date
 # def get_movie_date():
@@ -159,7 +159,7 @@ if __name__ == "__main__":
         )
 
     movie_name = 'The Batman'
-    release_date = imdb_actor.get_date(str(movie_name))
+    release_date = get_date(str(movie_name))
     print(release_date)
 
     before_dict = {}

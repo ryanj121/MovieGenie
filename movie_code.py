@@ -1,20 +1,19 @@
 import csv
 from imdb import IMDb
-import re
-
 
 
 #creates an instance of the IMDB api to be used by methods
 ia = IMDb()
 
 # gets the worldwide gross of a movie
-def movieGross(filmName):
+def movieGross():
+    
     # Search movie by title from user input
-    #input_name = input("Enter name of movie: ")
+    filmName = input("Enter name of movie: ")
     movie = ia.search_movie(filmName)
     gross_list = []
     # Take first result of serach
-    id = movie[0].movieID    
+    id = movie[0].movieID  
     # Get Worldwide gross
     movie = ia.get_movie(id)
     gross = (movie['box office']['Cumulative Worldwide Gross'])
@@ -26,7 +25,7 @@ def movieGross(filmName):
 
 # gets a persons ID to use in other IMDB api methods
 def personID(name):
-    ia = IMDb()    
+       
     person = ia.search_person(name)
     person_id = person[0].personID
     return person_id
@@ -34,7 +33,7 @@ def personID(name):
 
 # creates a list of all movies a certain actor is in
 def get_actor_movies(personID):
-    ia = IMDb()
+    
     word2= 'id:'
     actor_name = ia.get_person(personID)
     x = str(actor_name['actor'])
@@ -79,7 +78,7 @@ def get_date(filmName):
         'October': '10',
         'November': '11',
         'December':'12'
-    }    
+    }
     movie = ia.search_movie(filmName)
     # Take first result of serach
     id = movie[0].movieID
@@ -155,7 +154,7 @@ def get_top_movie_cast(title_list):
 def write_list_file(list):
     start = 0
     finish = 9
-    with open('list_updated.csv', 'w', newline='') as file1:
+    with open('top_250.csv', 'w', ) as file1:
         writer = csv.writer(file1)
         for i in list:
             list1 = list[start:finish]
@@ -166,27 +165,60 @@ def write_list_file(list):
 
 
 # this counts the times an actor appears in the list of 250 movies
-def search_list_actor(actor):
-    
+def search_list_actor():
+    actor = input('Enter Actor: ').lower()
     count = 0
-    with open('list_updated.csv') as file2:
+    with open('top_250.csv') as file2:
         csvreader = csv.reader(file2, delimiter=',')
         for row in csvreader:
-            actor.lower
+            #actor.lower
             if actor in row:
                 count+=1
-    return count            
+    return count
 
+def lower_data():
+    with open('d3.tsv', encoding="utf-8") as file2:
+        csvreader = csv.reader(file2, delimiter='\t')
+        with open('data_lower.csv', 'w', newline='', encoding="utf-8") as file3:
+            csvwriter = csv.writer(file3, delimiter='\t')
+            for row in csvreader:
+                actor_row = row[1].lower()
+                actor_movie_row = row[5]
+                csvwriter.writerow([actor_row, actor_movie_row])
+              
+def actor_known_titles():
+        with open('actor_known_titles.csv',encoding="utf-8") as file3:
+            csvreader = csv.reader(file3, delimiter='\t')
+            for row in csvreader:
+                list = row[1].split(',')
+                
 
+            
 
+# need to search for actor name, grab 6th column in csv
+# convert it to names instead of ID
+def actor_top_movies():
+    actor = input('Enter Actor: ')
+    with open('data_lower.csv', encoding="utf-8") as file2:
+        csvreader = csv.reader(file2, delimiter='\t')
+        for row in csvreader:
+            if actor in row:
+                movie_ids = row[1].split(',')
+                for i in movie_ids:
+                    id = i.strip('tt')
+                    top_movie = ia.get_movie(id)
+                    print(top_movie)
+
+#print(search_list_actor())
+#print(movieGross())
 # needs to lowercase so it will find actor in csv file
-if __name__ == "__main__":
-    print(get_date('Dune'))
-    # actor = input('Enter Actor: ').lower()
+#movie = input('Enter Movie: ')
+#actor = input('Enter Actor: ').lower()
 
+#print(get_date(movie))
 
-#print(actor_tier(search_list_actor(input_name)))
-#print(search_list_actor(input_name))
+#print(f'{actor} was in',search_list_actor(actor), 'top 250 movies')
+#print(f'Based on our ranking system {actor} is a ' + actor_tier(search_list_actor(actor)) + ' tier actor')
 #list1 = get_top_movie_cast(get_top_movies())
 #write_list_file(list1)
 #print(get_top_movie_cast(get_top_movies()))
