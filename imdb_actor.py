@@ -87,6 +87,17 @@ def get_date(filmName):
     ia.update(movie1, 'release dates')    
     date = (movie1['release dates'])
     movie_date = date[0]
+
+    # Loops through the release dates and finds USA release, otherwise keeps first date
+    for count, i in enumerate(date):
+        temp_date1 = i.split()
+        temp_date2 = temp_date1[0]
+        country = temp_date2.split('::')[0]
+        if country == 'USA':
+            movie_date = date[count]
+            break
+
+    print(movie_date)
     date2 = movie_date.split()
     day = date2[0]
     reddit_day = day.split('::')[1]
@@ -169,7 +180,10 @@ def search_list_actor(actor):
 
 
 # needs to lowercase so it will find actor in csv file
-actor = input('Enter Actor: ').lower()
+if __name__ == "__main__":
+    print(get_date('Dune'))
+    # actor = input('Enter Actor: ').lower()
+
 
 #print(actor_tier(search_list_actor(input_name)))
 #print(search_list_actor(input_name))
