@@ -96,7 +96,6 @@ def get_date(filmName):
             movie_date = date[count]
             break
 
-    print(movie_date)
     date2 = movie_date.split()
     day = date2[0]
     reddit_day = day.split('::')[1]
