@@ -162,7 +162,7 @@ def get_movie_sentiment_scores(movie_name):
     limit_results = 25
 
     release_date = get_date(str(movie_name))
-    print(release_date)
+    # print(release_date)
 
     before_dict = {}
     after_dict = {}
@@ -192,7 +192,7 @@ def get_movie_sentiment_scores(movie_name):
             after_dict = append_to_dict(after_dict, submission, comments)
 
         completed_posts += 1
-        print(f'Posts completed: {completed_posts} / {limit_results}')
+        # print(f'Posts completed: {completed_posts} / {limit_results}')
 
     if len(before_dict) > 0:
         final_stats_before = init_final_dict(before_dict)
