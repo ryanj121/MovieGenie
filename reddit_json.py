@@ -204,16 +204,8 @@ def get_movie_sentiment_scores(movie_name):
     write_to_json(final_stats_after, 'after_stats.json')
     
     #### Return a list of both dictionaries
-    #return [final_stats_before, final_stats_after]
+    return [final_stats_before, final_stats_after]
 
-    #### OR
-
-    #### Return a dictionary of the dictionaries
-    #before_and_after = {
-    #    'before' : final_stats_before,
-    #    'after' : final_stats_after
-    #}
-    #return before_and_after
 
 # Start main program
 if __name__ == "__main__":
