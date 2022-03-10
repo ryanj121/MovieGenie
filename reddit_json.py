@@ -149,7 +149,7 @@ def init_final_dict(input_dict):
     return final_stats_dict
 
 
-def get_movie_sentiment_scores(movie_name, limit_results):
+def get_movie_sentiment_scores(movie_name):
     # Login credentials for Reddit API
     reddit = praw.Reddit(
         client_id="Y9iVswQtUMulrMTo2SaBaA",
@@ -158,8 +158,8 @@ def get_movie_sentiment_scores(movie_name, limit_results):
         )
 
     # Set a maximum number of results to protect against large values
-    if limit_results > 25:
-        limit_results = 25
+    # if limit_results > 25:
+    limit_results = 25
 
     release_date = get_date(str(movie_name))
     print(release_date)
