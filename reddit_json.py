@@ -149,8 +149,7 @@ def init_final_dict(input_dict):
     return final_stats_dict
 
 
-# Start main program
-if __name__ == "__main__":
+def get_movie_sentiment_scores(movie_name, limit_results):
     # Login credentials for Reddit API
     reddit = praw.Reddit(
         client_id="Y9iVswQtUMulrMTo2SaBaA",
@@ -158,7 +157,10 @@ if __name__ == "__main__":
         user_agent="pc:movie_genie:v1.0 (by u/movie_genie)",
         )
 
-    movie_name = 'The Batman'
+    # Set a maximum number of results to protect against large values
+    if limit_results > 25:
+        limit_results = 25
+
     release_date = get_date(str(movie_name))
     print(release_date)
 
@@ -169,7 +171,6 @@ if __name__ == "__main__":
     after_dict = init_dict(after_dict)
 
     completed_posts = 0
-    limit_results = 10
 
     # Loop through r/movies submissions searching by movie name - Adjust limit for number of results
     for submission in reddit.subreddit('movies').search(query=movie_name, limit=limit_results):
@@ -193,8 +194,6 @@ if __name__ == "__main__":
         completed_posts += 1
         print(f'Posts completed: {completed_posts} / {limit_results}')
 
-    print('Printing data to json files...')
-
     if len(before_dict) > 0:
         final_stats_before = init_final_dict(before_dict)
     
@@ -203,5 +202,19 @@ if __name__ == "__main__":
 
     write_to_json(final_stats_before, 'before_stats.json')
     write_to_json(final_stats_after, 'after_stats.json')
+    
+    #### Return a list of both dictionaries
+    #return [final_stats_before, final_stats_after]
 
-    print('Done!')
+    #### OR
+
+    #### Return a dictionary of the dictionaries
+    #before_and_after = {
+    #    'before' : final_stats_before,
+    #    'after' : final_stats_after
+    #}
+    #return before_and_after
+
+# Start main program
+if __name__ == "__main__":
+    get_movie_sentiment_scores('Dune', 50)
