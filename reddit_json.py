@@ -206,7 +206,6 @@ def get_movie_sentiment_scores(movie_name):
     #### Return a list of both dictionaries
     return [final_stats_before, final_stats_after]
 
-
 # Start main program
-if __name__ == "__main__":
-    get_movie_sentiment_scores('Dune', 50)
+# if __name__ == "__main__":
+#    get_movie_sentiment_scores('Dune')
